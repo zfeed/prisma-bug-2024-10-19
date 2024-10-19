@@ -1,0 +1,24 @@
+version: "3"
+volumes :
+  pgdata :
+  pgadmin :
+  filebeat:
+
+networks:
+  mrkter-network:
+    driver: bridge
+
+services:
+  postgres-test-prisma:
+    container_name: postgres-test-prisma
+    image: postgres
+    networks:
+      - mrkter-network
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/data/postgres
+    env_file:
+      - docker.env
+    environment:
+      - TS_TUNE_MAX_CONNS=200

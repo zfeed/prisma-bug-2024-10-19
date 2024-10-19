@@ -1,0 +1,29 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id       Int       @id @default(autoincrement())
+  settings Setting[]
+}
+
+model Setting {
+  id        Int  @id @default(autoincrement())
+  // foreign keys
+  accountId Int?
+
+  account Account? @relation(fields: [accountId], references: [id])
+  user    User[]   @relation("userSetting")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  userSettingId Int?
+  userSetting   Setting? @relation("userSetting", fields: [userSettingId], references: [id])
+}
